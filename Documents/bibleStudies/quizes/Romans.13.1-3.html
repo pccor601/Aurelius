@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Quiz</title>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    margin:40px;
+}
+
+.question{
+    margin-bottom:25px;
+}
+
+.correct{
+    background-color:#b6f5b6;
+}
+
+.incorrect{
+    background-color:#f5b6b6;
+}
+
+button{
+    padding:10px 20px;
+    font-size:16px;
+}
+
+#score{
+    font-weight:bold;
+    margin-left:15px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Romans 13:1-3 Quiz</h2>
+
+<div id="quiz"></div>
+
+<button onclick="scoreQuiz()">Score</button>
+<span id="score">  <h2>Score: x/10</h2></span>
+
+<script>
+
+const questions = [
+
+{
+question: "1. What type of ministry does the State (government) have?",
+answers: [
+"Special grace ministry",
+"Common grace ministry",
+"Secular grace ministry",
+"Universal grace ministry",
+"None of the above"
+],
+correct: 1
+},
+
+{
+question: "2. Which of the following is not a God ordained institution?",
+answers: [
+"The Family",
+"The church",
+"The trade union",
+"The government",
+"None of the above"
+],
+correct: 2
+},
+
+{
+question: "3. When are we justified in breaking the law?",
+answers: [
+"When the law is an ass",
+"When keeping the law is inconvenient",
+"When we disagree with the law",
+"When the law requires us to sin",
+"None of the above"
+],
+correct: 3
+},
+
+{
+question: "4. Which is incorrect? Government authority derives from:",
+answers: [
+"The high court",
+"God",
+"The Governor/Governor General",
+"The King",
+"None of the above"
+],
+correct: 0
+},
+
+{
+question: "5. On what basis does God elect some to eternal life?",
+answers: [
+"Foreseen faith in Christ",
+"Interest in God",
+"The good pleasure of his will",
+"Humility",
+"None of the above"
+],
+correct: 2
+},
+
+{
+question: "6. Name the covenant made between the three persons of the trinity.",
+answers: [
+"Covenant of Grace",
+"Covenant of Mercy",
+"Covenant of Redemption",
+"Covenant of Salvation",
+"None of the above"
+],
+correct: 2
+},
+
+{
+question: "7. Which is the repentance necessary for salvation?",
+answers: [
+"Sorrow for having committed a crime",
+"Sorrow for having hurt a friend",
+"Sorrow for having sinned against God",
+"Sorrow for having mistreated an animal",
+"None of the above"
+],
+correct: 2
+},
+
+{
+question: "8. Which is an example of a monergism?",
+answers: [
+"Regeneration",
+"Sanctification",
+"Prayer",
+"Worship",
+"None of the above"
+],
+correct: 0
+},
+
+{
+question: "9. Which is an example of a synergism?",
+answers: [
+"The resurrection of Lazarus",
+"The granting of sight to the blind",
+"Divine election",
+"The atoning death of Jesus",
+"None of the above"
+],
+correct: 4
+},
+
+{
+question: "10. Which is an accurate description of the unbeliever?",
+answers: [
+"Totally unable to please God",
+"Able to believe in Jesus",
+"Able to repent and believe the gospel",
+"Able to love God",
+"None of the above"
+],
+correct: 0
+}
+
+];
+
+
+
+function buildQuiz(){
+
+const quizContainer = document.getElementById("quiz");
+
+questions.forEach((q,index)=>{
+
+let block = document.createElement("div");
+block.className="question";
+
+let html = `<p>${q.question}</p>`;
+
+q.answers.forEach((a,i)=>{
+
+html += `
+<label>
+<input type="radio" name="q${index}" value="${i}">
+<span class="answer">${a}</span>
+</label><br>
+`;
+
+});
+
+block.innerHTML = html;
+
+quizContainer.appendChild(block);
+
+});
+
+}
+
+function scoreQuiz(){
+
+let score=0;
+
+questions.forEach((q,index)=>{
+
+let selected = document.querySelector(`input[name="q${index}"]:checked`);
+
+let answers = document.querySelectorAll(`input[name="q${index}"]`);
+
+answers.forEach((radio,i)=>{
+
+let label = radio.parentElement;
+
+label.classList.remove("correct","incorrect");
+
+if(i===q.correct){
+label.classList.add("correct");
+}
+
+if(selected && i===parseInt(selected.value) && i!==q.correct){
+label.classList.add("incorrect");
+}
+
+});
+
+if(selected && parseInt(selected.value)===q.correct){
+score++;
+}
+
+});
+
+document.getElementById("score").textContent = "Score: "+score+"/10";
+
+}
+
+buildQuiz();
+
+</script>
+
+</body>
+</html>
