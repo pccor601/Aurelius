@@ -11,7 +11,6 @@ body {
   max-width: 900px;
   margin: 10px;
 }
-
 h2 {
   border-bottom: 1px solid #ccc;
   padding-bottom: 5px;
@@ -35,7 +34,6 @@ ul {
   flex-direction: column;
   align-items: center;
 }
-
 
 li {
   display: flex;
@@ -74,6 +72,15 @@ li {
     font-size: 0.85em;            /* slightly smaller */
   }
 }
+li:nth-child(odd) {
+  background-color: #ffffff;
+}
+li:nth-child(even) {
+  background-color: #f2f2f2;  /* light grey */
+}
+li {
+  padding: 8px;
+}
 </style>
 </head>
 
@@ -82,7 +89,7 @@ li {
 <h2>Documents</h2>
 <div id="path"></div>
 
-<h2><button onclick="goBack()">⬅ Back</button></h2>
+<h2><button id="navButton" onclick="goBack()">⬅ Back</button></h2>
 
 <ul id="fileList">Loading...</ul>
 
@@ -116,6 +123,7 @@ function loadFolder(path) {
       list.innerHTML = "";
 
       document.getElementById("path").textContent = path;
+      updateNavButton();
 
       data.forEach(item => {
         const li = document.createElement("li");
@@ -177,6 +185,18 @@ function goBack() {
   }
 }
 
+function updateNavButton() {
+  const btn = document.getElementById("navButton");
+
+  if (currentPath === ROOT) {
+    btn.textContent = "➡ Forward";
+    btn.disabled = true;   // optional (prevents clicking)
+  } else {
+    btn.textContent = "⬅ Back";
+    btn.disabled = false;
+  }
+  console.log("Current path:", currentPath);
+}
 loadFolder(ROOT);
 </script>
 
