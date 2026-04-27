@@ -157,13 +157,7 @@ function loadFolder(path) {
           openLink.textContent = "Open";
           openLink.target = "_blank";
 
-          const downloadLink = document.createElement("a");
-          downloadLink.href = item.download_url;
-          downloadLink.textContent = "Download";
-          downloadLink.setAttribute("download", "");
-
           actions.appendChild(openLink);
-          actions.appendChild(downloadLink);
 
           li.appendChild(name);
           li.appendChild(actions);
@@ -189,11 +183,10 @@ function updateNavButton() {
   const btn = document.getElementById("navButton");
 
   if (currentPath === ROOT) {
-    btn.textContent = "➡ Forward";
-    btn.disabled = true;   // optional (prevents clicking)
+    btn.style.display = "none";
   } else {
+    btn.style.display = "inline-block";
     btn.textContent = "⬅ Back";
-    btn.disabled = false;
   }
   console.log("Current path:", currentPath);
 }
