@@ -214,5 +214,29 @@ superior as adulthood is to childhood, as a face to face encounter is to polishe
 complete is to the partial. Amen.
 </p>
 </div>
+
+<script>
+(function () {
+  const key = "scroll-" + location.pathname;
+
+  // Restore position on load
+  window.addEventListener("load", () => {
+    const saved = localStorage.getItem(key);
+    if (saved !== null) {
+      window.scrollTo(0, parseInt(saved, 10));
+    }
+  });
+
+  // Save position while scrolling (throttled)
+  let timeout;
+  window.addEventListener("scroll", () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      localStorage.setItem(key, window.scrollY);
+    }, 200);
+  });
+})();
+</script>
+
 </body>
 </html>
