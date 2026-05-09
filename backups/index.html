@@ -96,8 +96,6 @@ li {
 const username = "pccor601";
 const repo = "Aurelius";
 const ROOT = "Documents";
-const allowedExtensions = [".html"];
-const hiddenFolders = ["css"];
 
 let currentPath = ROOT;
 let historyStack = [];
@@ -126,21 +124,7 @@ function loadFolder(path) {
       document.getElementById("path").textContent = path;
       updateNavButton();
 
-
       data.forEach(item => {
-        // Hide specific folders
-        if (item.type === "dir" && hiddenFolders.includes(item.name.toLowerCase())) {
-        return;
-        }
-        // Hide unwanted file types
-        if (item.type === "file") {
-            const name = item.name.toLowerCase();
-            const isAllowed = allowedExtensions.some(ext => name.endsWith(ext));
-
-        if (!isAllowed) return;
-        }
-
-
         const li = document.createElement("li");
 
         if (item.type === "dir") {
