@@ -169,5 +169,29 @@ contact me on pccor601@gmail.com.
 <p align="center" style="line-height: 100%; margin-bottom: 0cm"><br/>
 
 </p>
+
+<script>
+(function () {
+  const key = "scroll-" + location.pathname;
+
+  // Restore position on load
+  window.addEventListener("load", () => {
+    const saved = localStorage.getItem(key);
+    if (saved !== null) {
+      window.scrollTo(0, parseInt(saved, 10));
+    }
+  });
+
+  // Save position while scrolling (throttled)
+  let timeout;
+  window.addEventListener("scroll", () => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      localStorage.setItem(key, window.scrollY);
+    }, 200);
+  });
+})();
+</script>
+
 </body>
 </html>
