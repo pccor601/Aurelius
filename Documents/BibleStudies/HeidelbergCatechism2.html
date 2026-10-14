@@ -4,7 +4,7 @@
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="generator" content="RocketCake">
-	<title></title>
+	<title>Heidelberg Catechism — Lord’s Day 3</title>
 	<link rel="stylesheet" type="text/css" href="index_html.css?h=cc3ff4b6">
 <style>
   .highlight { background-color: #fff2a8; outline: 2px solid #e0b800; padding: 0.4em; }
@@ -30,7 +30,7 @@
 }
 </style>
 
-<h2>Lord's Day 3:  Q's 6 - 8</h2></span><span class="textstyle4">Q. 6. </span><span class="textstyle5">Did God, then, create man so wicked and perverse?</span><span class="textstyle4"><br/><br/></span>  </div>
+<h2>Lord's Day 3:  Q's 6 - 8</h2></span><span class="textstyle4"><i>Q. 6. </span><span class="textstyle5">Did God, then, create man so wicked and perverse?</i></span><span class="textstyle4"><br/><br/></span>  </div>
 <div class="textstyle6">
 <span class="textstyle4">Ans: </span><span class="textstyle5">No, on the contrary, God created man good (1) and in his image (2) that is, in true righteousness and holiness (3) so that he might rightly know God his Creator (4) heartily love him, and live with him in eternal blessedness to praise and glorify him (5).</span><span class="textstyle7"><br/><br/></span>  </div>
 <div class="textstyle1">
@@ -149,7 +149,89 @@
 <p id="scoreDisplay" style="font-weight:bold; font-size:1.2em;"></p>
 </form>
 
-<script src="quiz.js"></script>
+<script>
+/* Heidelberg Catechism reusable quiz engine */
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("quizForm");
+    if (!form) return;
+
+    const questions = form.querySelectorAll(".question");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    const helpButtons = form.querySelectorAll(".help-button");
+    const returnButtons = document.querySelectorAll(".return-question");
+
+    let quizReturnPosition = 0;
+    let quizHelpHistoryEntry = false;
+
+    window.addEventListener("popstate", function () {
+        if (!quizHelpHistoryEntry) return;
+        quizHelpHistoryEntry = false;
+        removeHighlight();
+        window.scrollTo({ top: quizReturnPosition, behavior: "auto" });
+    });
+
+    function removeHighlight() {
+        document.querySelectorAll(".highlight").forEach(function (element) {
+            element.classList.remove("highlight");
+        });
+    }
+
+    helpButtons.forEach(function (button) {
+        button.disabled = true;
+        button.addEventListener("click", function () {
+            const section = document.getElementById(button.dataset.section);
+            if (!section) return;
+
+            // Add a same-page history entry so Firefox's Back arrow returns to the quiz.
+            quizReturnPosition = window.scrollY;
+            quizHelpHistoryEntry = true;
+            history.pushState({ quizHelp: true }, "", location.href);
+
+            removeHighlight();
+            section.classList.add("highlight");
+            section.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+    });
+
+    returnButtons.forEach(function (button) {
+        button.disabled = true;
+        button.addEventListener("click", function () {
+            const question = document.getElementById(button.dataset.question);
+            if (!question) return;
+            removeHighlight();
+            question.scrollIntoView({ behavior: "smooth", block: "center" });
+        });
+    });
+
+    window.scoreQuiz = function () {
+        helpButtons.forEach(function (button) { button.disabled = false; });
+        returnButtons.forEach(function (button) { button.disabled = false; });
+        let score = 0;
+        const total = questions.length;
+
+        questions.forEach(function (question) {
+            const correctInput = question.querySelector('input[type="hidden"][name$="_correct"]');
+            if (!correctInput) return;
+            const correct = correctInput.value;
+            const chosen = question.querySelector('input[type="radio"]:checked');
+
+            question.querySelectorAll("label").forEach(function (label) {
+                label.style.background = "";
+                label.style.padding = "3px";
+                const input = label.querySelector('input[type="radio"]');
+                if (!input) return;
+                if (input.value === correct) label.style.background = "lightgreen";
+                if (chosen && input.value === chosen.value && chosen.value !== correct) {
+                    label.style.background = "lightcoral";
+                }
+            });
+            if (chosen && chosen.value === correct) score++;
+        });
+        if (scoreDisplay) scoreDisplay.textContent = `Score: ${score} / ${total}`;
+    };
+});
+
+</script>
 <script>
 (function () {
   const key = "scroll-" + location.pathname;
